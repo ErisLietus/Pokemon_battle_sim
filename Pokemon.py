@@ -1,57 +1,34 @@
-class Pokemon: 
-    def __init__(self, name, pokemon_type,hp,attack,defence,speed):
-        self.name = name 
+from battle_logic import attack_target
+
+class Pokemon:
+    def __init__(self, name, pokemon_type, hp, attack, defence, speed):
+        self.name = name
         self.type = pokemon_type
         self.hp = hp
         self.max_hp = hp
         self.attack = attack
         self.defence = defence
         self.speed = speed
+        self.moves = {}  # Subclasses will override this
+
+    def choose_move(self, target):
+        print(f"\n{self.name}'s moves:")
+        for key, (name, _) in self.moves.items():
+            print(f"  {key}. {name}")
         
-    
-    
-    def attack_target(self, target):
-        # Determine turn order based on speed
-        if self.speed >= target.speed:
-            first, second = self, target
+        choice = input("Choose a move (1-4): ")
+        
+        if choice in self.moves:
+            move_name, move_func = self.moves[choice]
+            move_func(target)
         else:
-            first, second = target, self
+            print("Invalid choice! Attack missed!")
+        
     
-        # Battle loop
-        while self.hp > 0 and target.hp > 0:
-            # First attacker's turn
-            damage = first.attack - second.defence
-            if damage < 1:
-                damage = 5
-            second.hp -= damage
-            print(f"{first.name} attacks {second.name} for {damage} damage!")
-        
-            if second.hp <= 0:
-                second.hp = 0
-                print(f"{second.name} fainted!")
-                if second.name == self.name:
-                    print("GAME OVER!")
-                    return target.name
-                else:
-                    self.hp = self.max_hp
-                    return self.name
-            # Second attacker's turn
-            damage = second.attack - first.defence
-            if damage < 1:
-                damage = 5
-            first.hp -= damage
-            print(f"{second.name} attacks {first.name} for {damage} damage!")
-            
-        
-            if first.hp <= 0:
-                first.hp = 0
-                print(f"{first.name} fainted!")
-                if first.name == self.name:
-                    print("GAME OVER!")
-                    return target.name
-                else:
-                    self.hp = self.max_hp
-                    return self.name
+    
+    def start_battle(self, target):
+        return attack_target(self,target)
+
         
     
 

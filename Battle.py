@@ -1,4 +1,5 @@
 from Pokemon import Pikachu, Charmander, Squirtle, Bulbasaur, Pokemon
+from battle_logic import attack_target
 import random
 
 
@@ -18,11 +19,11 @@ def battle(companion, player_pokemon=None):
 
     print(f"{player_pokemon.name} vs {enemy_pokemon.name}")
     
-    winner = player_pokemon.attack_target(enemy_pokemon)
-    
+    winner = player_pokemon.start_battle(enemy_pokemon)
+    print(f"DEBUG: winner = {winner}, player = {player_pokemon.name}")
+
     if winner == player_pokemon.name:
-        battle(companion, player_pokemon)
+        return battle(companion, player_pokemon)
     else:
         print(f"{player_pokemon.name} was defeated. Better luck next time!")
-
 
