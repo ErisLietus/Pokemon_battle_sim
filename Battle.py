@@ -20,7 +20,6 @@ def battle(companion, player_pokemon=None):
     print(f"{player_pokemon.name} vs {enemy_pokemon.name}")
     
     winner = player_pokemon.start_battle(enemy_pokemon)
-    print(f"DEBUG: winner = {winner}, player = {player_pokemon.name}")
 
     if winner == player_pokemon.name:
         return battle(companion, player_pokemon)
