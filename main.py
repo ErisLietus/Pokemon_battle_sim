@@ -1,5 +1,5 @@
-from Battle import battle
+from battle_contorl import battle_contorl
 from pokemon_roster import Pikachu, Charmander, Squirtle, Bulbasaur, Pokemon
 
-companion = [Pikachu, Charmander, Squirtle, Bulbasaur]
-battle(companion)
+companion = [Pikachu(), Bulbasaur()]
+battle_contorl(companion)

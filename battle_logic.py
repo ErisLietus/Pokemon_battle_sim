@@ -1,59 +1,26 @@
-def attack_target(attacker, target):
+from battle import battle
+
+def attack_target(player, target):
         # Determine turn order based on speed
-        if attacker.speed >= target.speed:
-            first, second = attacker, target
+        if player.speed >= target.speed:
+            first, second = player, target
         else:
-            first, second = target, attacker
+            first, second = target, player
     
-        # Battle loop
-        while attacker.hp > 0 and target.hp > 0:
-            # First attacker's turn
-            if first.is_stunned:
-                    print(f"{first.name} is stunned cannot move")
+        
+
+        if first.has_turn:
+            result = battle(first, second, player, target)
+            if result == 0:
+                first.has_turn = False 
+                return attack_target(player, target)
             else:
-                if first.is_player_pokemon == True:
-                    first.choose_move(second)
-                else:
-                    first.random_move(second)
-            if second.hp > 0:
-                 print(f"{second.name} has {second.hp}HP left")
-
-            if second.hp <= 0:
-                second.hp = 0
-                print(f"{second.name} fainted!")
-                if second.name == attacker.name:
-                    print("GAME OVER!")
-                    return target.name
-                else:
-                    attacker.hp = attacker.max_hp
-                    attacker.attack = attacker.max_attack
-                    attacker.defence = attacker.max_defence
-                    attacker.speed = attacker.max_speed
-                    attacker.is_stunned = False
-                    return attacker.name
-            # Second attacker's turn
-            if second.is_stunned:
-                    print(f"{second.name} is stunned cannot move")
+                return result
+        else:
+            result = battle(second, first, player, target)
+            first.has_turn = True
+            if result == 0:
+                return attack_target(player, target)
             else:
-                if second.is_player_pokemon == True:
-                    second.choose_move(first)
-                else:
-                    second.random_move(first)
-
-            if first.hp > 0:
-                 print(f"{first.name} has {first.hp}HP left")
-
-            if first.hp <= 0:
-                first.hp = 0
-                print(f"{first.name} fainted!")
-                if first.name == attacker.name:
-                    print("GAME OVER!")
-                    return target.name
-                else:
-                    attacker.hp = attacker.max_hp
-                    attacker.hp = attacker.max_hp
-                    attacker.attack = attacker.max_attack
-                    attacker.defence = attacker.max_defence
-                    attacker.speed = attacker.max_speed
-                    attacker.is_stunned = False
-                    return attacker.name
+                return result
+         
