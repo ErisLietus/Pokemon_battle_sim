@@ -1,4 +1,5 @@
-from base_pokemon import Pikachu, Charmander, Squirtle, Bulbasaur, Pokemon
+from base_pokemon import Pokemon
+from pokemon_roster import Pikachu, Charmander, Squirtle,Bulbasaur, Boots
 from battle_logic import attack_target
 import random
 

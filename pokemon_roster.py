@@ -11,23 +11,18 @@ class Pikachu(Pokemon):
         }
     
     def thunder_shock(self, target):
-        self.perform_attack(target, self.attack, "Thunder Shock")
+       
+        self.perform_attack(target, self.attack, "Thunder Shock", "Electric")
         
 
     def quick_attack(self, target):
-        if self.speed == 0:
-            print(f"{self.name} has 0 speed, attack missed")
-        else:
-            damage = self.speed - target.defence
-            actual_damage = target.take_damage(damage)
-            print(f"{self.name} uses Quick Attack for {actual_damage} damage!")
+        self.perform_attack(target, self.speed, "Quick Attack", "Normal")
         
 
     def lighting_tail(self, target):
-        damage_dealt = self.perform_attack(target, self.attack + self.speed, "Lighting Tail")
-        if damage_dealt:
-            self.is_stunned = True
-            print(f"{self.name} is stunned!")
+        self.perform_attack(target, self.attack + self.speed, "Lighting Tail")
+        self.is_stunned = True
+        print(f"{self.name} is stunned!")
     
     def tail_whip(self, target):
         target.defence -= 10
@@ -48,28 +43,17 @@ class Charmander(Pokemon):
         }
     
     def thunder_shock(self, target):
-        damage = self.attack - target.defence
-        if damage < 0:
-            damage = 5
-        target.hp -= damage
-        print(f"{self.name} uses Thunder Shock for {damage} damage!")
+       
+        self.perform_attack(target, self.attack, "Thunder Shock", "Electric")
         
 
     def quick_attack(self, target):
-        damage = self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
-        print(f"{self.name} uses Quick Attack for {damage} damage!")
+        self.perform_attack(target, self.speed, "Quick Attack", "Normal")
         
 
-    def lighting_tail(self,target):
-        damage = self.attack + self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
+    def lighting_tail(self, target):
+        self.perform_attack(target, self.attack + self.speed, "Lighting Tail", "Electric")
         self.is_stunned = True
-        print(f"{self.name} uses Lighting Tail for {damage} damage!")
         print(f"{self.name} is stunned!")
     
     def tail_whip(self, target):
@@ -77,6 +61,7 @@ class Charmander(Pokemon):
         if target.defence < 0:
             target.defence = 0
         print(f"{self.name} used Tail Whip, lowers {target.name}'s defence!")
+        print(f"{target.name} has {target.defence} left")
 
 class Squirtle(Pokemon):
     def __init__(self):
@@ -89,28 +74,17 @@ class Squirtle(Pokemon):
         }
     
     def thunder_shock(self, target):
-        damage = self.attack - target.defence
-        if damage < 0:
-            damage = 5
-        target.hp -= damage
-        print(f"{self.name} uses Thunder Shock for {damage} damage!")
+       
+        self.perform_attack(target, self.attack, "Thunder Shock", "Electric")
         
 
     def quick_attack(self, target):
-        damage = self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
-        print(f"{self.name} uses Quick Attack for {damage} damage!")
+        self.perform_attack(target, self.speed, "Quick Attack", "Normal")
         
 
-    def lighting_tail(self,target):
-        damage = self.attack + self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
+    def lighting_tail(self, target):
+        self.perform_attack(target, self.attack + self.speed, "Lighting Tail","Electric")
         self.is_stunned = True
-        print(f"{self.name} uses Lighting Tail for {damage} damage!")
         print(f"{self.name} is stunned!")
     
     def tail_whip(self, target):
@@ -118,6 +92,7 @@ class Squirtle(Pokemon):
         if target.defence < 0:
             target.defence = 0
         print(f"{self.name} used Tail Whip, lowers {target.name}'s defence!")
+        print(f"{target.name} has {target.defence} left")
 class Bulbasaur(Pokemon):
     def __init__(self):
         super().__init__("Bulbasaur", "Grass", 110, 40, 25, 15)
@@ -129,28 +104,17 @@ class Bulbasaur(Pokemon):
         }
     
     def thunder_shock(self, target):
-        damage = self.attack - target.defence
-        if damage < 0:
-            damage = 5
-        target.hp -= damage
-        print(f"{self.name} uses Thunder Shock for {damage} damage!")
+       
+        self.perform_attack(target, self.attack, "Thunder Shock", "Electric")
         
 
     def quick_attack(self, target):
-        damage = self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
-        print(f"{self.name} uses Quick Attack for {damage} damage!")
+        self.perform_attack(target, self.speed, "Quick Attack", "Normal")
         
 
-    def lighting_tail(self,target):
-        damage = self.attack + self.speed - target.defence
-        target.hp -= damage
-        if damage < 0:
-            damage = 5
+    def lighting_tail(self, target):
+        self.perform_attack(target, self.attack + self.speed, "Lighting Tail", "Electric")
         self.is_stunned = True
-        print(f"{self.name} uses Lighting Tail for {damage} damage!")
         print(f"{self.name} is stunned!")
     
     def tail_whip(self, target):
@@ -158,6 +122,8 @@ class Bulbasaur(Pokemon):
         if target.defence < 0:
             target.defence = 0
         print(f"{self.name} used Tail Whip, lowers {target.name}'s defence!")
+        print(f"{target.name} has {target.defence} left")
+
 class Boots(Pokemon):
     def __init__(self):
         super().__init__("Boots", "Psychic", 150, 45, 30, 30)
