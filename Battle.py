@@ -1,4 +1,4 @@
-from Pokemon import Pikachu, Charmander, Squirtle, Bulbasaur, Pokemon
+from base_pokemon import Pikachu, Charmander, Squirtle, Bulbasaur, Pokemon
 from battle_logic import attack_target
 import random
 
@@ -9,6 +9,7 @@ def battle(companion, player_pokemon=None):
         player_class = random.choice(companion)
         companion.remove(player_class)
         player_pokemon = player_class()
+        player_pokemon.is_player_pokemon = True
     
     if companion == []:
         return print(f"{player_pokemon.name} Wins the game!")

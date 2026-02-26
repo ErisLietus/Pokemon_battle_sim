@@ -8,12 +8,16 @@ def attack_target(attacker, target):
         # Battle loop
         while attacker.hp > 0 and target.hp > 0:
             # First attacker's turn
-            damage = first.attack - second.defence
-            if damage < 1:
-                damage = 5
-            second.hp -= damage
-            print(f"{first.name} attacks {second.name} for {damage} damage!")
-        
+            if first.is_stunned:
+                    print(f"{first.name} is stunned cannot move")
+            else:
+                if first.is_player_pokemon == True:
+                    first.choose_move(second)
+                else:
+                    first.random_move(second)
+            if second.hp > 0:
+                 print(f"{second.name} has {second.hp}HP left")
+
             if second.hp <= 0:
                 second.hp = 0
                 print(f"{second.name} fainted!")
@@ -22,15 +26,23 @@ def attack_target(attacker, target):
                     return target.name
                 else:
                     attacker.hp = attacker.max_hp
+                    attacker.attack = attacker.max_attack
+                    attacker.defence = attacker.max_defence
+                    attacker.speed = attacker.max_speed
+                    attacker.is_stunned = False
                     return attacker.name
             # Second attacker's turn
-            damage = second.attack - first.defence
-            if damage < 1:
-                damage = 5
-            first.hp -= damage
-            print(f"{second.name} attacks {first.name} for {damage} damage!")
-            
-        
+            if second.is_stunned:
+                    print(f"{second.name} is stunned cannot move")
+            else:
+                if second.is_player_pokemon == True:
+                    second.choose_move(first)
+                else:
+                    second.random_move(first)
+
+            if first.hp > 0:
+                 print(f"{first.name} has {first.hp}HP left")
+
             if first.hp <= 0:
                 first.hp = 0
                 print(f"{first.name} fainted!")
@@ -39,4 +51,9 @@ def attack_target(attacker, target):
                     return target.name
                 else:
                     attacker.hp = attacker.max_hp
+                    attacker.hp = attacker.max_hp
+                    attacker.attack = attacker.max_attack
+                    attacker.defence = attacker.max_defence
+                    attacker.speed = attacker.max_speed
+                    attacker.is_stunned = False
                     return attacker.name
