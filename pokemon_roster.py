@@ -5,15 +5,21 @@ class Pikachu(Pokemon):
     def __init__(self):
         super().__init__("Pikachu", 90, 40, 15, 50,"Electric")
         self.moves = {
-            "1": ("Thunder Shock","Shocks opponent damage based of attack.", self.thunder_shock),
+            "1": ("Dash","Increases Pikachus speed.", self.Dash),
             "2": ("Quick Attack","Quickly hits the opponent damage based of speed.", self.quick_attack),
             "3": ("Lighting Tail","A quick hard hitting attack that stuns pokemon.", self.lighting_tail),
             "4": ("Tail Whip","Lowers the oppenents defence.", self.tail_whip)
         }
     
-    def thunder_shock(self, target):
+    def Dash(self, target):
        
-        self.perform_attack(target, self.attack, "Thunder Shock", "Electric")
+        if self.speed < self.max_stat_increase:
+            self.speed =+5
+            print(f"Pikachu dashed around the arena it increased it's speed to {self.speed}")
+            if self.speed == self.max_stat_increase:
+                print(f"Pikachu's speed cannnot go any higher")
+        else:
+            print(f"Pikachu's dashed around the arena but its speed can not go any higher")
         
 
     def quick_attack(self, target):
@@ -37,22 +43,31 @@ class Charmander(Pokemon):
     def __init__(self):
         super().__init__("Charmander", 100, 35, 20, 35,"Fire")
         self.moves = {
-            "1": ("Thunder Shock","test", self.thunder_shock),
-            "2": ("Quick Attack","test", self.quick_attack),
-            "3": ("Lighting Tail","test", self.lighting_tail),
-            "4": ("Tail Whip","test", self.tail_whip)
+            "1": ("Ember","test", self.thunder_shock),
+            "2": ("Dragon Rage","test", self.quick_attack),
+            "3": ("Fire Fang","test", self.lighting_tail),
+            "4": ("Scary Face","test", self.scary_face)
         }
-    
-    
+    def dragon_rage(self, target):
+
+    def fire_fang(self, target):
+
+    def scary_face(self, target):
+        target.attack -= 5
+        print(f"{self.name} made a scary face. {target.name}'s speed fell!")
+        print(f"{target.name} has {target.speed} speed left!")
+        if target.speed < target.min_stat_decrease:
+            target.speed = target.min_stat_decrease
+            print(f"{target.name} speed cannot be decreased anymore")
 
 class Squirtle(Pokemon):
     def __init__(self):
         super().__init__("Squirtle", 120, 25, 35, 20,"Water")
         self.moves = {
-            "1": ("Thunder Shock", self.thunder_shock),
-            "2": ("Quick Attack", self.quick_attack),
-            "3": ("Lighting Tail", self.lighting_tail),
-            "4": ("Tail Whip", self.tail_whip)
+            "1": ("Water Gun","Shoots water at the opponent based of attack", self.thunder_shock),
+            "2": ("Withdraw","Raises defence", self.quick_attack),
+            "3": ("Protect", "Protects it self for one turn", self.lighting_tail),
+            "4": ("Skull Bash","Rams into the opponent", self.tail_whip)
         }
     
     
@@ -90,22 +105,48 @@ class Bulbasaur(Pokemon):
 
     def growl(self, target):
         target.attack -= 5
-        if target.attack < 0:
-            target.attack = 0
         print(f"{self.name} growled! {target.name}'s attack fell!")
         print(f"{target.name} has {target.attack} attack left!")
+        if target.attack < target.min_stat_decrease:
+            target.attack = target.min_stat_decrease
+            print(f"{target.name} defence cannot be decreased anymore")
+        
         
     
     
 
 class Boots(Pokemon):
     def __init__(self):
-        super().__init__("Boots", 150, 45, 30, 30,"Psychic","Ice")
+        # High stats for a final boss encounter
+        super().__init__("Boots", 150, 40, 30, 30, "Psychic", "Ice")
         self.moves = {
-            "1": ("Thunder Shock", self.thunder_shock),
-            "2": ("Quick Attack", self.quick_attack),
-            "3": ("Lighting Tail", self.lighting_tail),
-            "4": ("Tail Whip", self.tail_whip)
+            "1": ("Enchanted Wisdom","Psychic blasts the opponent", self.enchanted_wisdom),
+            "2": ("Crystal Clarity","Showers the opponent with icy shards", self.crystal_clarity),
+            "3": ("Debug","Lowers the opponents defence", self.debug),
+            "4": ("Deep Freeze", "Freezes the opponent for high damage is left stunned", self.deep_freeze)
         }
+
+    def enchanted_wisdom(self, target):
+        # A standard powerful Psychic attack
+        self.perform_attack(target, self.attack + 10, "Enchanted Wisdom", "Psychic")
+
+    def crystal_clarity(self, target):
+        # An Ice attack that scales with both Speed and Attack
+        damage = (self.attack + self.speed) // 1.5
+        self.perform_attack(target, damage, "Crystal Clarity", "Ice")
+
+    def debug(self, target):
+        # Lowers the player's defense significantly, making them vulnerable
+        reduction = 15
+        target.defence -= reduction
+        if target.defence < 0:
+            target.defence = 0
+        print(f"Boots uses Debug! {target.name}'s defense dropped by {reduction}!")
+
+    def deep_freeze(self, target):
+        # A "finisher" move: Massive damage, but stuns the user
+        self.perform_attack(target, self.attack * 2, "Deep Freeze", "Ice")
+        self.is_stunned = 1 
+        print("Boots is exhausted from the absolute zero temperature!")
     
     

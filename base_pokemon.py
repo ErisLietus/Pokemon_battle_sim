@@ -19,6 +19,9 @@ class Pokemon:
         self.speed = speed
         self.max_speed = speed
         self.is_stunned = 0
+        self.is_protected = 0
+        self.max_stat_increase = 60
+        self.min_stat_decrease = 10
         self.is_player_pokemon = False
         self.has_turn = True
         self.moves = {}  # Subclasses will override this
@@ -108,7 +111,12 @@ class Pokemon:
         raw_damage = base_damage - target.defence
     
         # 3. Apply Type Multipliers and Variance in target.take_damage
-        actual_damage = target.take_damage(raw_damage, move_type)
+        if target.is_protected == 1:
+            actual_damage = 0
+            print(f"{target.name} is protected")
+            target.is_protected = 0
+        else:    
+            actual_damage = target.take_damage(raw_damage, move_type)
     
         # 4. Print the final result
         print(f"{self.name} uses {move_name} for {actual_damage} damage!")

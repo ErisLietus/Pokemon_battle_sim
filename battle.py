@@ -4,6 +4,7 @@ def battle(first, second, player,enemy):
         print(f"{first.name} is stunned cannot move")
         first.is_stunned = 0
         return 0
+    
     else:
         
         if first.is_player_pokemon == True:

@@ -56,7 +56,7 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0):
         player_pokemon.is_stunned = False
         player_pokemon.has_turn = True
     
-        print(f"\nNurse Joy: 'Your {player_pokemon.name} is fighting fit! Good luck in the next round!'")
+        print(f"\nNurse Joy: 'Your {player_pokemon.name} is all healed up! Good luck in the next round!'")
         return battle_contorl(companions, player_pokemon, battle_count)
     else:
         print(f"{player_pokemon.name} was defeated. Better luck next time!")
