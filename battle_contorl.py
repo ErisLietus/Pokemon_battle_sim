@@ -2,9 +2,9 @@ from base_pokemon import Pokemon
 from pokemon_roster import Pikachu, Charmander, Squirtle,Bulbasaur, Boots
 from battle_logic import attack_target
 import random
+win = 0
 
-
-def battle_contorl(companions, player_pokemon=None, battle_count=0):
+def battle_contorl(companions, player_pokemon=None, battle_count=0,):
     
     if player_pokemon is None:
         print("Available Pokemon:")
@@ -17,7 +17,7 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0):
         # Look for the object that matches the name
         selected = None
         for c in companions:
-            if c.name.lower() == choice.lower():
+            if c.name.lower() == choice.lower().strip():
                 selected = c
                 break
             
@@ -35,6 +35,9 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0):
     # Check if the gauntlet is over
     if not companions or battle_count == 5:
         print(f"CONGRATULATIONS! {player_pokemon.name} Wins the game!")
+        
+        global win 
+        win = 1
         return
     
     # Pick a random enemy from the remaining list
@@ -55,7 +58,7 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0):
         player_pokemon.speed = player_pokemon.max_speed
         player_pokemon.is_stunned = False
         player_pokemon.has_turn = True
-    
+
         print(f"\nNurse Joy: 'Your {player_pokemon.name} is all healed up! Good luck in the next round!'")
         return battle_contorl(companions, player_pokemon, battle_count)
     else:

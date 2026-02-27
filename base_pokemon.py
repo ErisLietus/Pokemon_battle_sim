@@ -5,6 +5,7 @@ from Type_chart import TYPE_CHART
 import sys
 
 
+
 class Pokemon:
     def __init__(self, name, hp, attack, defence, speed, base_type, second_type = None):
         self.name = name
@@ -36,22 +37,16 @@ class Pokemon:
     
         if choice in self.moves:
             move_name, move_des, move_func = self.moves[choice]
-            if random.randint(1, 5) == 5:
-                print(f"{self.name}'s attack missed!")
-                return 0
+            
             return move_func(target)
-        elif choice.lower() == "run":
+        elif choice.lower().strip() == "run":
             print(f"{self.name} ran away. .... Coward!")
             sys.exit()
         else:
             print("Invalid choice! Attack missed!")
             return 0
 
-    def random_move(self, target):
-        if random.randint(1, 5) == 5:
-            print(f"{self.name}'s attack missed!")
-            return 0
-    
+    def random_move(self, target): 
         move_key = random.choice(list(self.moves.keys()))
         move_name,move_des, move_func = self.moves[move_key]
         print(f"{self.name} uses {move_name}!")
@@ -102,11 +97,7 @@ class Pokemon:
         return attack_target(self, target)
     
     def perform_attack(self, target, base_damage, move_name, move_type):
-        # 1. Check if the Pokemon is even strong enough to move
-        if base_damage <= 0:
-            print(f"{self.name} is too weak to use {move_name}!")
-            return 0
-    
+        
         # 2. Calculate raw damage (Attack vs Defense)
         raw_damage = base_damage - target.defence
     
@@ -115,8 +106,12 @@ class Pokemon:
             actual_damage = 0
             print(f"{target.name} is protected")
             target.is_protected = 0
-        else:    
-            actual_damage = target.take_damage(raw_damage, move_type)
+        else:
+            if random.randint(1, 5) == 5:
+                print(f"{self.name}'s attack missed!")
+                actual_damage = 0
+            else:    
+                actual_damage = target.take_damage(raw_damage, move_type)
     
         # 4. Print the final result
         print(f"{self.name} uses {move_name} for {actual_damage} damage!")
