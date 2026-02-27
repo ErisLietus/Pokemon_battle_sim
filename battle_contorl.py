@@ -2,6 +2,7 @@ from base_pokemon import Pokemon
 from pokemon_roster import Pikachu, Charmander, Squirtle,Bulbasaur, Boots
 from battle_logic import attack_target
 import random
+import sys
 win = 0
 
 def battle_contorl(companions, player_pokemon=None, battle_count=0,):
@@ -36,7 +37,13 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
     if not companions or battle_count == 5:
         print(f"CONGRATULATIONS! {player_pokemon.name} Wins the game!")
         
-        global win 
+        global win
+        if win == 0:
+            enemy_pokemon = Boots()
+            winner = player_pokemon.start_battle(enemy_pokemon)
+            if winner == enemy_pokemon.name:
+               print(f"{player_pokemon.name} was defeated. Better luck next time!")
+               sys.exit()  
         win = 1
         return
     
@@ -56,11 +63,13 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
         player_pokemon.attack = player_pokemon.max_attack
         player_pokemon.defence = player_pokemon.max_defence
         player_pokemon.speed = player_pokemon.max_speed
-        player_pokemon.is_stunned = False
+        player_pokemon.is_stunned = 0
         player_pokemon.has_turn = True
+        player_pokemon.is_guarded = 0
 
         print(f"\nNurse Joy: 'Your {player_pokemon.name} is all healed up! Good luck in the next round!'")
         return battle_contorl(companions, player_pokemon, battle_count)
     else:
         print(f"{player_pokemon.name} was defeated. Better luck next time!")
+        sys.exit()
 

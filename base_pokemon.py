@@ -1,5 +1,4 @@
 from battle_logic import attack_target
-from battle import battle
 import random
 from Type_chart import TYPE_CHART
 import sys
@@ -21,8 +20,11 @@ class Pokemon:
         self.max_speed = speed
         self.is_stunned = 0
         self.is_protected = 0
-        self.max_stat_increase = 60
+        self.max_stat_increase_basic = 60
         self.min_stat_decrease = 10
+        self.max_stat_increase_advanced = 120
+        self.cannot_miss = 0
+        self.is_guarded = 0
         self.is_player_pokemon = False
         self.has_turn = True
         self.moves = {}  # Subclasses will override this
@@ -40,7 +42,7 @@ class Pokemon:
             
             return move_func(target)
         elif choice.lower().strip() == "run":
-            print(f"{self.name} ran away. .... Coward!")
+            print(f"{self.name} ran away. -tssss- .... Coward!")
             sys.exit()
         else:
             print("Invalid choice! Attack missed!")
@@ -108,8 +110,12 @@ class Pokemon:
             target.is_protected = 0
         else:
             if random.randint(1, 5) == 5:
-                print(f"{self.name}'s attack missed!")
-                actual_damage = 0
+                if self.cannot_miss == 1:
+                   actual_damage = target.take_damage(raw_damage, move_type) 
+                else:
+                    print(f"{self.name}'s attack missed!")
+                    actual_damage = 0
+                
             else:    
                 actual_damage = target.take_damage(raw_damage, move_type)
     
