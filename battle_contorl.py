@@ -34,7 +34,7 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
         player_pokemon.is_player_pokemon = True
     
     # Check if the gauntlet is over
-    if not companions or battle_count == 5:
+    if not companions or battle_count == 1:
         print(f"CONGRATULATIONS! {player_pokemon.name} Wins the game!")
         
         global win

@@ -252,7 +252,7 @@ class Boots(Pokemon):
         target.defence -= 10
         if target.defence < target.min_stat_decrease:
             target.defence = target.min_stat_decrease
-        print(f"Boots uses Debug! {target.name}'s defense dropped by {reduction}!")
+        print(f"Boots uses Debug! {target.name}'s defense dropped by 10 points!")
 
     def deep_freeze(self, target):
         # A "finisher" move: Massive damage, but stuns the user
