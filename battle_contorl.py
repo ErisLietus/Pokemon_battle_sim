@@ -3,6 +3,7 @@ from pokemon_roster import Pikachu, Charmander, Squirtle,Bulbasaur, Boots
 from battle_logic import attack_target
 import random
 import sys
+from main import main
 win = 0
 
 def battle_contorl(companions, player_pokemon=None, battle_count=0,):
@@ -39,10 +40,12 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
         
         global win
         if win == 0:
+            print(f"\n\nHang on a Second. A new challanger appears the final boss Boots!!")
             enemy_pokemon = Boots()
             winner = player_pokemon.start_battle(enemy_pokemon)
             if winner == enemy_pokemon.name:
                print(f"{player_pokemon.name} was defeated. Better luck next time!")
+               
                sys.exit()  
         win = 1
         return
@@ -71,5 +74,10 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
         return battle_contorl(companions, player_pokemon, battle_count)
     else:
         print(f"{player_pokemon.name} was defeated. Better luck next time!")
-        sys.exit()
+        again = input("\nWould you like to play another gauntlet? (y/n): ").lower().strip()
+        if again != 'y':
+            print("\nYour journey ends here. Safe travels, apprentice!")
+            sys.exit()
+        else:
+            main()
 
