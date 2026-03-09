@@ -176,7 +176,6 @@ class Snorlax(Pokemon):
         self.perform_attack(target, self.attack + 10, "Body Slam", "Normal")
 
     def rest(self, target):
-        # The ultimate healing move
         self.hp += 50
         if self.hp >= self.max_hp:
             self.hp = self.max_hp
@@ -199,7 +198,7 @@ class Snorlax(Pokemon):
 
 class Boots(Pokemon):
     def __init__(self):
-        # High stats for a final boss encounter
+        
         super().__init__("Boots", 150, 40, 30, 30, "Psychic", "Ice")
         self.moves = {
             "1": ("Enchanted Wisdom","Psychic: Psychic blasts the opponent", self.enchanted_wisdom),
@@ -209,22 +208,22 @@ class Boots(Pokemon):
         }
 
     def enchanted_wisdom(self, target):
-        # A standard powerful Psychic attack
+        
         self.perform_attack(target, self.attack , "Enchanted Wisdom", "Psychic")
 
     def crystal_clarity(self, target):
-        # An Ice attack that scales with both Speed and Attack
+        
         damage = (self.attack + self.speed) // 1.5
         self.perform_attack(target, damage, "Crystal Clarity", "Ice")
 
     def debug(self, target):
-        # Lowers the player's defense significantly, making them vulnerable
+        
        
         print(f"Boots uses Debug! {target.name}'s defense dropped by 10 points!")
         target.modify_stat("defence", -10)
 
     def deep_freeze(self, target):
-        # A "finisher" move: Massive damage, but stuns the user
+        
         self.perform_attack(target, self.attack * 2, "Deep Freeze", "Ice")
         self.is_stunned = 1 
         print("Boots is exhausted from the absolute zero temperature!")
