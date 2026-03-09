@@ -122,6 +122,30 @@ class Pokemon:
         # 4. Print the final result
         print(f"{self.name} uses {move_name} for {actual_damage} damage!")
         return actual_damage
+    
+    def modify_stat(self, stat_name, amount):
+        if amount > 0:
+            limit = self.max_stat_increase_advanced
+        else:
+            limit = self.min_stat_decrease
+
+        current_val = getattr(self, stat_name)
+        
+        if (amount > 0 and current_val >= limit) or (amount < 0 and current_val <= limit):
+            print(f"{self.name}'s {stat_name} cannot go any {'higher' if amount > 0 else 'lower'}!")
+            return
+
+        new_val = current_val + amount
+        if amount > 0:
+            new_val = min(new_val, limit)
+        else:
+            new_val = max(new_val, limit)
+
+        setattr(self, stat_name, new_val)
+        direction = "rose" if amount > 0 else "fell"
+        print(f"{self.name}'s {stat_name} {direction} to {new_val}!")
+
+    
 
         
     

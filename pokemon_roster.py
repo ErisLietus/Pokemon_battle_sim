@@ -12,14 +12,8 @@ class Pikachu(Pokemon):
         }
     
     def Dash(self, target):
-       
-        if self.speed < self.max_stat_increase_basic:
-            self.speed += 5
-            print(f"Pikachu dashed around the arena it increased it's speed to {self.speed}")
-            if self.speed == self.max_stat_increase_basic:
-                print(f"Pikachu's speed cannnot go any higher")
-        else:
-            print(f"Pikachu's dashed around the arena but its speed can not go any higher")
+        print(f"Pikachu dashed around the arena it increased it's speed")
+        self.modify_stat("speed", 5)
         
 
     def quick_attack(self, target):
@@ -32,11 +26,8 @@ class Pikachu(Pokemon):
         print(f"{self.name} is stunned!")
     
     def tail_whip(self, target):
-        target.defence -= 5
-        if target.defence < 0:
-            target.defence = 0
-        print(f"{self.name} used Tail Whip, lowers {target.name}'s defence!")
-        print(f"{target.name} has {target.defence} defence left")
+        print(f"{self.name} wags its tail taunting {target.name}")
+        target.modify_stat("defence", -5)
         
 
 class Charmander(Pokemon):
@@ -59,22 +50,14 @@ class Charmander(Pokemon):
         self.hp -= 15
         print(f"{self.name} recoiled and damaged it self. It has{self.hp}HP left")
 
-    def cheer(self, target):
-        if self.attack < self.max_stat_increase_basic:
-            self.attack += 5 
-            print(f"Charmander cheered it self on raising its attack. Its attack is now {self.attack}")
-            if self.attack == self.max_stat_increase_basic:
-                print(f"Charmanders attack cannot be increased anymore")
-        else:
-            print(f"Charmander cheered it self on. But it's attack can not go any higher")
+    def cheer(self, target):     
+        print(f"Charmander cheered it self on raising its attack.")
+        self.modify_stat("attack" ,5)
+            
 
     def scary_face(self, target):
-        target.speed -= 5
         print(f"{self.name} made a scary face. {target.name}'s speed fell!")
-        print(f"{target.name} has {target.speed} speed left!")
-        if target.speed < target.min_stat_decrease:
-            target.speed = target.min_stat_decrease
-            print(f"{target.name} speed cannot be decreased anymore")
+        target.modify_stat("speed",-5)
 
 class Squirtle(Pokemon):
     def __init__(self):
@@ -90,13 +73,9 @@ class Squirtle(Pokemon):
             self.perform_attack(target, self.attack, "Water Gun", "Water")
 
     def withdraw(self, target):
-        if self.defence < self.max_stat_increase_basic:
-            self.defence += 5 
-            print(f"Squirte withdraws into its shell increasing its defence. Its defence is now {self.defence}")
-            if self.defence == self.max_stat_increase_basic:
-                print(f"Squirtes defence cannot be increased anymore")
-        else:
-            print(f"Squirte withdraws into its shell. But it's defence can not go any higher")
+        print(f"Squirte withdraws into its shell increasing its defence.")
+        self.modify_stat("defence", 5)
+            
 
     def protect(self,target):
         self.is_protected = 1
@@ -141,12 +120,8 @@ class Bulbasaur(Pokemon):
             self.perform_attack(target,attack_base, "Razor Leaf", "Grass") 
 
     def growl(self, target):
-        target.attack -= 5
-        print(f"{self.name} growled! {target.name}'s attack fell!")
-        print(f"{target.name} has {target.attack} attack left!")
-        if target.attack < target.min_stat_decrease:
-            target.attack = target.min_stat_decrease
-            print(f"{target.name} defence cannot be decreased anymore")
+        print(f"{self.name} growled! Scarying its opponent")
+        target.modify_stat("attack", -5)
 
 class Eevee(Pokemon):
     def __init__(self):
@@ -182,12 +157,9 @@ class Eevee(Pokemon):
         self.perform_attack(target, damage, "Swift", "Normal")
 
     def charm(self, target):
-        target.attack -= 5
+        
         print(f"{self.name} charmed its opponent! {target.name}'s attack fell!")
-        print(f"{target.name} has {target.attack} attack left!")
-        if target.attack < target.min_stat_decrease:
-            target.attack = target.min_stat_decrease
-            print(f"{target.name} attack cannot be decreased anymore")
+        target.modify_stat("attack", -5)
 
 class Snorlax(Pokemon):
     def __init__(self):
@@ -213,10 +185,8 @@ class Snorlax(Pokemon):
         print(f"{self.name} is stunned and cannot move next turn!")
 
     def yawn(self, target):
-        target.speed -= 10
-        if target.speed < target.min_stat_decrease:
-            target.speed = target.min_stat_decrease
         print(f"{self.name} let out a massive yawn! {target.name} is feeling drowsy and its speed fell!")
+        target.modify_stat("speed", -10)
 
     def amnesia(self, target):
         if self.defence < self.max_stat_increase_basic:
@@ -249,10 +219,9 @@ class Boots(Pokemon):
 
     def debug(self, target):
         # Lowers the player's defense significantly, making them vulnerable
-        target.defence -= 10
-        if target.defence < target.min_stat_decrease:
-            target.defence = target.min_stat_decrease
+       
         print(f"Boots uses Debug! {target.name}'s defense dropped by 10 points!")
+        target.modify_stat("defence", -10)
 
     def deep_freeze(self, target):
         # A "finisher" move: Massive damage, but stuns the user
