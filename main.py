@@ -5,7 +5,7 @@ import random
 
 def main():
     print("Welcome to the Pokemon Battle Academy!")
-    
+    battle_contorl.win = 1
     while True:
         # Refresh the leagues every time the loop starts
         starter_league = [Pikachu(), Charmander(), Squirtle(), Bulbasaur(), Eevee(), Snorlax()]
