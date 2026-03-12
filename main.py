@@ -1,11 +1,11 @@
-import battle_contorl
+import battle_control
 from pokemon_roster import Pikachu, Charmander, Squirtle, Bulbasaur, Eevee, Snorlax, Boots
 from advanced_pokemon import Gardevoir, Stakataka, Vanilluxe, Milotic, Volcarona, Dragonite
 import random
 
 def main():
     print("Welcome to the Pokemon Battle Academy!")
-    battle_contorl.win = 1
+    battle_control.win = 1
     while True:
         # Refresh the leagues every time the loop starts
         starter_league = [Pikachu(), Charmander(), Squirtle(), Bulbasaur(), Eevee(), Snorlax()]
@@ -13,7 +13,7 @@ def main():
         advanced_league = [Gardevoir(), Stakataka(), Vanilluxe(), Milotic(), Volcarona(), Dragonite()]
         
         # Check the win status from the module
-        if battle_contorl.win == 1:
+        if battle_control.win == 1:
             print("\n--- Advanced League Unlocked! ---")
             choice = input("Choose 'starter', 'advanced', or press Enter for random: ").lower().strip()
             
@@ -27,7 +27,7 @@ def main():
             companion = starter_league
             
         # Call the function specifically from the module
-        battle_contorl.battle_contorl(companion)
+        battle_control.battle_contorl(companion)
         
         # Ask to play again so the script doesn't just end
         again = input("\nWould you like to play another gauntlet? (y/n): ").lower().strip()

@@ -6,7 +6,7 @@ import sys
 from main import main
 win = 0
 
-def battle_contorl(companions, player_pokemon=None, battle_count=0,):
+def battle_control(companions, player_pokemon=None, battle_count=0,):
     
     if player_pokemon is None:
         print("Available Pokemon:")
@@ -71,7 +71,7 @@ def battle_contorl(companions, player_pokemon=None, battle_count=0,):
         player_pokemon.is_guarded = 0
 
         print(f"\nNurse Joy: 'Your {player_pokemon.name} is all healed up! Good luck in the next round!'")
-        return battle_contorl(companions, player_pokemon, battle_count)
+        return battle_control(companions, player_pokemon, battle_count)
     else:
         print(f"{player_pokemon.name} was defeated. Better luck next time!")
         again = input("\nWould you like to play another gauntlet? (y/n): ").lower().strip()
