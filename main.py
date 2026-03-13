@@ -5,7 +5,7 @@ import random
 
 def main():
     print("Welcome to the Pokemon Battle Academy!")
-    battle_control.win = 1
+    
     while True:
         # Refresh the leagues every time the loop starts
         starter_league = [Pikachu(), Charmander(), Squirtle(), Bulbasaur(), Eevee(), Snorlax()]
@@ -27,7 +27,7 @@ def main():
             companion = starter_league
             
         # Call the function specifically from the module
-        battle_control.battle_contorl(companion)
+        battle_control.battle_control(companion)
         
         # Ask to play again so the script doesn't just end
         again = input("\nWould you like to play another gauntlet? (y/n): ").lower().strip()

@@ -30,29 +30,33 @@ class Pokemon:
         self.moves = {}  # Subclasses will override this
 
     def choose_move(self, target):
+        # 1. Show the moves
         print(f"\n{self.name}'s moves:")
-        print("Type 'run' to flee and stop the game")
-        for key, (name,discription, _) in self.moves.items():
-            print(f"  {key}. {name}. {discription}")
-    
-        choice = input("Choose a move (1-4): ")
-    
-        if choice in self.moves:
-            move_name, move_des, move_func = self.moves[choice]
+        for key, move_obj in self.moves.items():
+            print(f"  {key}. {move_obj.name}: {move_obj.description}")
+        print("Type 'run' to flee.")
+
+        # 2. The Loop for Valid Input
+        while True:
+            choice = input("Choose a move (1-4): ").strip().lower()
+
+            if choice == "run":
+                print(f"{self.name} ran away...Tsss, Coward!")
+                sys.exit()
+
+            if choice in self.moves:
+                # We found a valid move! Run it and exit the loop.
+                move_obj = self.moves[choice]
+                return move_obj.execute(self, target)
             
-            return move_func(target)
-        elif choice.lower().strip() == "run":
-            print(f"{self.name} ran away. -tssss- .... Coward!")
-            sys.exit()
-        else:
-            print("Invalid choice! Attack missed!")
-            return 0
+            # If we get here, the input was bad
+            print(f"Invalid choice! Please pick a number from: {', '.join(self.moves.keys())}")
+        
 
     def random_move(self, target): 
         move_key = random.choice(list(self.moves.keys()))
-        move_name,move_des, move_func = self.moves[move_key]
-        print(f"{self.name} uses {move_name}!")
-        return move_func(target)
+        move_obj = self.moves[move_key]
+        return move_obj.execute(self,target)
 
     def take_damage(self, damage, move_type):
     # 'self' is the Pokemon taking the damage

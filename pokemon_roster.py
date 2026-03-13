@@ -1,231 +1,176 @@
 from base_pokemon import Pokemon
-import random
+from move import Move
 
 class Pikachu(Pokemon):
     def __init__(self):
-        super().__init__("Pikachu", 90, 40, 15, 50,"Electric")
+        super().__init__("Pikachu", 90, 40, 15, 50, "Electric")
         self.moves = {
-            "1": ("Dash","Normal:Increases Pikachus speed.", self.Dash),
-            "2": ("Quick Attack","Normal:Quickly hits the opponent damage based of speed.", self.quick_attack),
-            "3": ("Lighting Tail","Electric: A quick hard hitting attack that stuns pokemon.", self.lighting_tail),
-            "4": ("Tail Whip","Normal: Lowers the oppenents defence.", self.tail_whip)
+            "1": Move(
+                "Increases Pikachu's speed", "Pikachu dashed around the arena!", 
+                "Dash", "Normal", "speed", 5, 
+                is_attack=False, stat_to_fix=["speed"], effect_value=5, target_self=True
+            ),
+            "2": Move(
+                "Hits based on speed", "Pikachu lunges with a Quick Attack!", 
+                "Quick Attack", "Normal", "speed", 0
+            ),
+            "3": Move(
+                "Hard hit with stun chance", "Lightning crackles on Pikachu's tail!", 
+                "Lightning Tail", "Electric", "attack", 10, 
+                effects=["stun"]
+            ),
+            "4": Move(
+                "Lowers opponent's defense", "Pikachu wags its tail tauntingly.", 
+                "Tail Whip", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["defence"], effect_value=-5, target_self=False
+            )
         }
-    
-    def Dash(self, target):
-        print(f"Pikachu dashed around the arena it increased it's speed")
-        self.modify_stat("speed", 5)
-        
-
-    def quick_attack(self, target):
-        self.perform_attack(target, self.speed, "Quick Attack", "Normal")
-        
-
-    def lighting_tail(self, target):
-        self.perform_attack(target, self.attack + self.speed, "Lighting Tail", "Electric")
-        self.is_stunned = 1
-        print(f"{self.name} is stunned!")
-    
-    def tail_whip(self, target):
-        print(f"{self.name} wags its tail taunting {target.name}")
-        target.modify_stat("defence", -5)
-        
 
 class Charmander(Pokemon):
     def __init__(self):
-        super().__init__("Charmander", 100, 35, 20, 35,"Fire")
+        super().__init__("Charmander", 100, 35, 20, 35, "Fire")
         self.moves = {
-            "1": ("Ember","Fire: Throws a flame at the opponent. Based of attack", self.ember),
-            "2": ("Dragon Rage","Dragon: Breaths wild fire at the opponent, ingores defence but takes recoil damage", self.dragon_rage),
-            "3": ("Cheer","Normal: Cheers it self on. Increases attack", self.cheer),
-            "4": ("Scary Face","Normal: Pulls a scary face at the opponent. Lowers thier speed", self.scary_face)
+            "1": Move(
+                "Standard fire damage", "Charmander lets out a small flame!", 
+                "Ember", "Fire", "attack", 0
+            ),
+            "2": Move(
+                "High damage with recoil", "Charmander breathes wild fire!", 
+                "Dragon Rage", "Dragon", "attack", 15, 
+                effects=["recoil"], effect_value=15
+            ),
+            "3": Move(
+                "Increases attack", "Charmander cheered itself on!", 
+                "Cheer", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["attack"], effect_value=5, target_self=True
+            ),
+            "4": Move(
+                "Lowers opponent's speed", "Charmander makes a scary face!", 
+                "Scary Face", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["speed"], effect_value=-5, target_self=False
+            )
         }
-    def ember(self,target):
-        self.perform_attack(target, self.attack, "Ember", "Fire")
-
-    def dragon_rage(self, target):
-        temp = target.defence
-        target.defence = 0
-        self.perform_attack(target, self.attack + 15, "Dragon Rage", "Dragon")
-        target.defence = temp
-        self.hp -= 15
-        print(f"{self.name} recoiled and damaged it self. It has{self.hp}HP left")
-
-    def cheer(self, target):     
-        print(f"Charmander cheered it self on raising its attack.")
-        self.modify_stat("attack" ,5)
-            
-
-    def scary_face(self, target):
-        print(f"{self.name} made a scary face. {target.name}'s speed fell!")
-        target.modify_stat("speed",-5)
 
 class Squirtle(Pokemon):
     def __init__(self):
-        super().__init__("Squirtle", 120, 25, 35, 20,"Water")
+        super().__init__("Squirtle", 120, 25, 35, 20, "Water")
         self.moves = {
-            "1": ("Water Gun","Water: Shoots water at the opponent based of attack", self.water_gun),
-            "2": ("Withdraw","Normal: Raises defence", self.withdraw),
-            "3": ("Protect", "Normal: Protects it self for one turn", self.protect),
-            "4": ("Skull Bash","Normal: Goes into its shell and Rams into the opponent", self.skull_bash)
+            "1": Move(
+                "Standard water damage", "Squirtle shoots a jet of water!", 
+                "Water Gun", "Water", "attack", 0
+            ),
+            "2": Move(
+                "Raises defense", "Squirtle withdraws into its shell.", 
+                "Withdraw", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["defence"], effect_value=5, target_self=True
+            ),
+            "3": Move(
+                "Protects for one turn", "Squirtle hides inside its shell!", 
+                "Protect", "Normal", "attack", 0, 
+                is_attack=False, effects=["shield"]
+            ),
+            "4": Move(
+                "Damage based on defense", "Squirtle slams its shell into the target!", 
+                "Skull Bash", "Normal", "defence", 0
+            )
         }
 
-    def water_gun(self, target):
-            self.perform_attack(target, self.attack, "Water Gun", "Water")
-
-    def withdraw(self, target):
-        print(f"Squirte withdraws into its shell increasing its defence.")
-        self.modify_stat("defence", 5)
-            
-
-    def protect(self,target):
-        self.is_protected = 1
-        print(f"Squirtle hid inside its shell. It is protected for one turn")
-
-    def skull_bash(self,target):
-        self.perform_attack(target, self.defence, "Skull bash", "Normal")
-        
-
-    
-    
 class Bulbasaur(Pokemon):
     def __init__(self):
         super().__init__("Bulbasaur", 110, 40, 25, 15, "Grass", "Poison")
         self.moves = {
-            "1": ("Vine Whip","Grass: Hits the opponent with a Vine damage based of attack", self.vine_whip),
-            "2": ("Synthesis","Grass: Heals Pokemon for 30 HP limited by max HP", self.synthesis),
-            "3": ("Razor Leaf","Grass: Hits for less damage but has a chance to crit for higher damage", self.razor_leaf),
-            "4": ("Growl","Normal: Lowers opponents attack", self.growl)
+            "1": Move(
+                "Standard grass damage", "Bulbasaur whips its vines!", 
+                "Vine Whip", "Grass", "attack", 0
+            ),
+            "2": Move(
+                "Heals 30 HP", "Bulbasaur absorbs sunlight!", 
+                "Synthesis", "Grass", "attack", 0, 
+                is_attack=False, effects=["heal"], effect_value=30
+            ),
+            "3": Move(
+                "High critical hit chance", "Bulbasaur launches sharp leaves!", 
+                "Razor Leaf", "Grass", "attack", -10, 
+                effects=["increased crit"]
+            ),
+            "4": Move(
+                "Lowers opponent's attack", "Bulbasaur growls scarying the opponent!", 
+                "Growl", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["attack"], effect_value=-5, target_self=False
+            )
         }
-
-    def vine_whip(self, target):
-
-        self.perform_attack(target, self.attack, "Vine Whip", "Grass")
-    
-
-    def synthesis(self, target):
-        heal_amount = 30
-        self.hp += heal_amount
-        if self.hp > self.max_hp:
-            self.hp = self.max_hp
-        print(f"{self.name} used Synthesis and healed! HP is now {self.hp}")
-
-    def razor_leaf(self,target):
-        crit_chance = random.randint(1,2)
-        attack_base = self.attack / 2
-        if crit_chance == 2:
-            crit = self.attack * 2
-            print("Critical Hit!")
-            self.perform_attack(target, crit, "Razor Leaf", "Grass")
-        else:
-            self.perform_attack(target,attack_base, "Razor Leaf", "Grass") 
-
-    def growl(self, target):
-        print(f"{self.name} growled! Scarying its opponent")
-        target.modify_stat("attack", -5)
 
 class Eevee(Pokemon):
     def __init__(self):
         super().__init__("Eevee", 110, 40, 20, 25, "Normal")
         self.moves = {
-            "1": ("Bite","Dark: Bits the opponent", self.bite),
-            "2": ("Disarming Voice","Fairy: attacks for less damage but hits regardless of protected state", self.disarming_voice),
-            "3": ("Swift","Normal: Hits three times with a chance to crit or do less damage", self.swift),
-            "4": ("Charm","Normal: Lowers opponents attack", self.charm)
+            "1": Move(
+                "Standard dark damage", "Eevee bites the opponent!", 
+                "Bite", "Dark", "attack", 0
+            ),
+            "2": Move(
+                "Hits through protection", "Eevee's voice rings out!", 
+                "Disarming Voice", "Fairy", "attack", -5, 
+                effects=["shield_breaker"]
+            ),
+            "3": Move(
+                "Hits 3 times", "Eevee unleashes a flurry of stars!", 
+                "Swift", "Normal", "attack", -10, 
+                hits=3
+            ),
+            "4": Move(
+                "Lowers opponent's attack", "Eevee looks adorable!", 
+                "Charm", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["attack"], effect_value=-5, target_self=False
+            )
         }
-
-    def bite(self, target):
-
-        self.perform_attack(target, self.attack, "Bite", "Dark")
-    
-
-    def disarming_voice(self, target):
-        target.is_protected = 0
-        temp = target.attack - 5
-        self.perform_attack(target, temp, "Disarming voice", "Fairy")
-
-    def swift(self,target):
-        print(f"{self.name} unleashed a flurry of stars!")
-    # Loop 3 times for 3 separate hits
-        for i in range(3):
-        # Calculate if this specific hit crits
-            if random.randint(1, 4) == 4:
-                print("Critical Hit!")
-                damage = self.attack // 1.5 * 2
-            else:
-                damage = self.attack // 2
-        
-        self.perform_attack(target, damage, "Swift", "Normal")
-
-    def charm(self, target):
-        
-        print(f"{self.name} charmed its opponent! {target.name}'s attack fell!")
-        target.modify_stat("attack", -5)
 
 class Snorlax(Pokemon):
     def __init__(self):
-        # High HP, Low Speed, Decent Attack/Defense
         super().__init__("Snorlax", 160, 50, 40, 5, "Normal")
         self.moves = {
-            "1": ("Body Slam", "Normal: Slams its heavy body into the opponent.", self.body_slam),
-            "2": ("Rest", "Normal: The Snorlax takes a nap, healing but becoming stunned.", self.rest),
-            "3": ("Yawn", "Normal: A huge yawn that lowers the opponent's speed.", self.yawn),
-            "4": ("Amnesia", "Normal: Forgets its troubles to raise its own defense.", self.amnesia)
+            "1": Move(
+                "Heavy normal damage", "Snorlax slams its massive body!", 
+                "Body Slam", "Normal", "attack", 10
+            ),
+            "2": Move(
+                "Heals 50 HP but stuns user", "Snorlax takes a quick nap!", 
+                "Rest", "Normal", "attack", 0, 
+                is_attack=False, effects=["heal", "stun"], effect_value=50, target_self=True
+            ),
+            "3": Move(
+                "Lowers opponent's speed", "Snorlax lets out a massive yawn!", 
+                "Yawn", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["speed"], effect_value=-10, target_self=False
+            ),
+            "4": Move(
+                "Increases own defense", "Snorlax forgets its troubles.", 
+                "Amnesia", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["defence"], effect_value=10, target_self=True
+            )
         }
-
-    def body_slam(self, target):
-        self.perform_attack(target, self.attack + 10, "Body Slam", "Normal")
-
-    def rest(self, target):
-        self.hp += 50
-        if self.hp >= self.max_hp:
-            self.hp = self.max_hp
-        self.is_stunned = 1
-        print(f"The Snorlax {self.name} fell asleep and recovered all HP!")
-        print(f"{self.name} is stunned and cannot move next turn!")
-
-    def yawn(self, target):
-        print(f"{self.name} let out a massive yawn! {target.name} is feeling drowsy and its speed fell!")
-        target.modify_stat("speed", -10)
-
-    def amnesia(self, target):
-        if self.defence < self.max_stat_increase_basic:
-            self.defence += 10
-            print(f"{self.name} used Amnesia! Its defense rose to {self.defence}!")
-        else:
-            print(f"{self.name} already forgot everything it could!")
-        
-     
 
 class Boots(Pokemon):
     def __init__(self):
-        
         super().__init__("Boots", 150, 40, 30, 30, "Psychic", "Ice")
         self.moves = {
-            "1": ("Enchanted Wisdom","Psychic: Psychic blasts the opponent", self.enchanted_wisdom),
-            "2": ("Crystal Clarity","Psychic:Showers the opponent with icy shards", self.crystal_clarity),
-            "3": ("Debug","Normal:Lowers the opponents defence", self.debug),
-            "4": ("Deep Freeze", "Ice: Freezes the opponent for high damage is left stunned", self.deep_freeze)
+            "1": Move(
+                "Psychic blast", "Boots shares enchanted wisdom!", 
+                "Enchanted Wisdom", "Psychic", "attack", 0
+            ),
+            "2": Move(
+                "Icy shards based on speed", "Boots creates crystal shards!", 
+                "Crystal Clarity", "Ice", "speed", 10
+            ),
+            "3": Move(
+                "Lowers enemy defense", "Boots finds a bug in the code!", 
+                "Debug", "Normal", "attack", 0, 
+                is_attack=False, stat_to_fix=["defence"], effect_value=-10, target_self=False
+            ),
+            "4": Move(
+                "Massive damage but stuns user", "Boots drops the temperature to absolute zero!", 
+                "Deep Freeze", "Ice", "attack", 40, 
+                effects=["stun"], target_self=True
+            )
         }
-
-    def enchanted_wisdom(self, target):
-        
-        self.perform_attack(target, self.attack , "Enchanted Wisdom", "Psychic")
-
-    def crystal_clarity(self, target):
-        
-        damage = (self.attack + self.speed) // 1.5
-        self.perform_attack(target, damage, "Crystal Clarity", "Ice")
-
-    def debug(self, target):
-        
-       
-        print(f"Boots uses Debug! {target.name}'s defense dropped by 10 points!")
-        target.modify_stat("defence", -10)
-
-    def deep_freeze(self, target):
-        
-        self.perform_attack(target, self.attack * 2, "Deep Freeze", "Ice")
-        self.is_stunned = 1 
-        print("Boots is exhausted from the absolute zero temperature!")
-    
     
