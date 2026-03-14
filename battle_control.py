@@ -6,29 +6,34 @@ import sys
 from main import main
 win = 0
 
-def battle_control(companions, player_pokemon=None, battle_count=0,):
-    
+def battle_control(companions, player_pokemon=None, battle_count=0):
     if player_pokemon is None:
-        print("Available Pokemon:")
-        for c in companions:
-            print(f" - {c.name}")
-
-        print("Press Enter for random Pokemon")
-        choice = input("Choose your Pokemon: ")
-        
-        # Look for the object that matches the name
         selected = None
-        for c in companions:
-            if c.name.lower() == choice.lower().strip():
-                selected = c
-                break
+        
+        # Start a loop that only breaks when a Pokemon is successfully chosen
+        while selected is None:
+            print("\nAvailable Pokemon:")
+            for c in companions:
+                print(f" - {c.name}")
+
+            print("Press Enter for random Pokemon")
+            choice = input("Choose your Pokemon: ").lower().strip()
             
-        if choice == "":
-            print("Choosing a random companion...")
-            selected = random.choice(companions)
-        elif selected is None:
-            print(f"I couldn't find a Pokemon named '{choice}'. Picking a random one for you.")
-            selected = random.choice(companions)
+            # Handle the random choice first
+            if choice == "":
+                print("Choosing a random companion...")
+                selected = random.choice(companions)
+                break # Exit the while loop
+            
+            # Look for the object that matches the name
+            for c in companions:
+                if c.name.lower() == choice:
+                    selected = c
+                    break
+            
+            # If after checking all companions, selected is still None
+            if selected is None:
+                print(f"\n[!] I couldn't find a Pokemon named '{choice}'. Please try again!")
             
         player_pokemon = selected
         companions.remove(player_pokemon)

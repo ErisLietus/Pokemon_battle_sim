@@ -59,10 +59,8 @@ class Move:
         if self.stat_to_fix != None:
             for stat in self.stat_to_fix:
                 destination = user if self.target_self else target
-                destination.modify_stat(self.stat_to_fix, self.effect_value)
+                destination.modify_stat(self.stat_to_fix[stat], self.effect_value)
 
-        for effect in self.effects:
-            
             
             for effect in self.effects:
 
