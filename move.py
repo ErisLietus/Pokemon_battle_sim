@@ -59,22 +59,22 @@ class Move:
         if self.stat_to_fix != None:
             for stat in self.stat_to_fix:
                 destination = user if self.target_self else target
-                destination.modify_stat(self.stat_to_fix[stat], self.effect_value)
+                destination.modify_stat(stat, self.effect_value)
 
             
-            for effect in self.effects:
+        for effect in self.effects:
 
-                if effect == "heal":
-                    self._apply_heal(user, self.effect_value)
+            if effect == "heal":
+                self._apply_heal(user, self.effect_value)
 
-                if effect == "stun":
-                    destination = user if self.target_self else target
+            if effect == "stun":
+                destination = user if self.target_self else target
         
-                    if self.target_self:
+                if self.target_self:
                         destination.is_stunned = 1
             
-                    else:
-                        self._apply_stun(destination)
+                else:
+                    self._apply_stun(destination)
             
             if effect == "recoil":
                 self._recoil(user, self.effect_value)
