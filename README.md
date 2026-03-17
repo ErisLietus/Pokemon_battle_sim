@@ -1,9 +1,16 @@
-# Pokemon_battle_sim
-A simple pokemon battle simulator in the terminal 
+## Installation
 
-You go though one round of starting pokemon and if you can defeat the boss boots then you can move to the advanced league. 
+To run the Pokemon Battle Simulator, you'll need Python 3.12+ and Pygame.
 
-Needs Python 3 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ErisLietus/Pokemon_battle_sim
+   cd Pokemon_battle_sim
 
-To run in terminal - Python3 main.py
+2. python3 -m venv venv
+   source venv/bin/activate  (On Windows: venv\Scripts\activate)
+
+3. pip install -r requirements.txt
+
+4. python3 main.py 
 
