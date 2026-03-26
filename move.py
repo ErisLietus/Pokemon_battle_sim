@@ -1,4 +1,5 @@
 import random 
+import pygame
 
 class Move:
     def __init__(self, description,favour_text, name, move_type, attack_stat_name, power,
@@ -97,3 +98,5 @@ class Move:
 
     def _never_misses(self, user): 
         user.cannot_miss = 1
+
+    

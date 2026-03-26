@@ -1,62 +1,100 @@
 import pygame
 import sys
+from advanced_pokemon import Gardevoir, Dragonite
+from move import Move
 
-# Initialize Pygame
+# 1. Setup
 pygame.init()
-
-# Constants for our window
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-FPS = 60
-
-# Colors (R, G, B)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-
-# Create the window
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Pokemon Battle Academy: Pygame Edition")
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pokemon Battle GUI")
 clock = pygame.time.Clock()
+font = pygame.font.SysFont("Arial", 24)
 
-def draw_hp_bar(x, y, current_hp, max_hp):
-    # Calculate width based on percentage
-    ratio = current_hp / max_hp
-    pygame.draw.rect(screen, RED, (x, y, 200, 20)) # Red background
-    pygame.draw.rect(screen, GREEN, (x, y, 200 * ratio, 20)) # Green health
+# 2. Initialize our actual Pokemon objects!
+player = Gardevoir()
+enemy = Dragonite()
 
-def main_game_loop():
-    # Let's pretend we have a Pikachu for testing
-    # In the future, we will pass your actual Pokemon objects here!
+def draw_pokemon_info(pkmn, x, y, is_player):
+    # Draw Name
+    name_text = font.render(f"{pkmn.name} (Lvl 50)", True, (0, 0, 0))
+    screen.blit(name_text, (x, y))
     
-    running = True
-    while running:
-        # 1. Event Handling (Input)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
+    # Draw HP Bar Background (Gray)
+    pygame.draw.rect(screen, (200, 200, 200), (x, y + 30, 200, 15))
+    
+    # Calculate HP Width
+    current_hp = max(0, pkmn.hp)
+    hp_ratio = current_hp / pkmn.max_hp
+    bar_color = (0, 255, 0) if hp_ratio > 0.5 else (255, 165, 0) if hp_ratio > 0.2 else (255, 0, 0)
+    
+    # Draw Current HP (Green/Yellow/Red)
+    pygame.draw.rect(screen, bar_color, (x, y + 30, 200 * hp_ratio, 15))
+    
+    # Draw HP Numbers
+    hp_text = font.render(f"{pkmn.hp}/{pkmn.max_hp}", True, (0, 0, 0))
+    screen.blit(hp_text, (x, y + 50))
 
-        # 2. Update Logic (We'll put battle math here later)
+def draw_buttons(pokemon):
+    # We will draw 4 buttons in a 2x2 grid at the bottom
+        button_font = pygame.font.SysFont("Arial", 18)
+        mouse_pos = pygame.mouse.get_pos()
+    
+    # We'll store the button rectangles so we can check for clicks later
+        button_rects = {}
+    
+        x_start, y_start = 450, 400
+        width, height = 150, 45
+        padding = 10
 
-        # 3. Drawing (The "Render" phase)
-        screen.fill(WHITE) # Clear screen with white
+        for i, (key, move) in enumerate(pokemon.moves.items()):
+            # Calculate grid position (0,1 top row; 2,3 bottom row)
+            col = i % 2
+            row = i // 2
+            rect = pygame.Rect(x_start + (width + padding) * col, 
+                           y_start + (height + padding) * row, 
+                           width, height)
         
-        # Draw a temporary "Pokemon" (a rectangle for now)
-        pygame.draw.rect(screen, (255, 220, 0), (100, 300, 150, 150)) # Player
-        pygame.draw.rect(screen, (100, 100, 100), (550, 100, 150, 150)) # Enemy
+        # Hover effect: Change color if mouse is over the button
+            color = (180, 180, 180) if rect.collidepoint(mouse_pos) else (220, 220, 220)
         
-        # Draw HP Bars
-        draw_hp_bar(100, 270, 90, 90) # Player HP
-        draw_hp_bar(550, 70, 150, 150) # Enemy HP
-
-        # Refresh the screen
-        pygame.display.flip()
+            pygame.draw.rect(screen, color, rect)
+            pygame.draw.rect(screen, (0, 0, 0), rect, 2) # Border
         
-        # Maintain 60 FPS
-        clock.tick(FPS)
+        # Draw Move Name
+            text = button_font.render(move.name, True, (0, 0, 0))
+            text_rect = text.get_rect(center=rect.center)
+            screen.blit(text, text_rect)
+        
+            button_rects[key] = rect
+        
+        return button_rects
 
-if __name__ == "__main__":
-    main_game_loop()
+# 3. Main Loop
+while True:
+    button_rects = draw_buttons(player) # Draw them and get their positions
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+            
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1: # Left click
+                for move_key, rect in button_rects.items():
+                    if rect.collidepoint(event.pos):
+                        # ACTION! Execute the move
+                        move = player.moves[move_key]
+                        damage_dealt = move.execute(player, enemy)
+                        print(f"GUI: {player.name} dealt {damage_dealt} damage!")
+
+    screen.fill((255, 255, 255)) # White background
+
+    # Draw our "Stage"
+    # Enemy is usually top-right, Player is bottom-left
+    draw_pokemon_info(enemy, 500, 50, False)
+    draw_pokemon_info(player, 100, 400, True)
+    draw_buttons(player)
+
+    pygame.display.flip()
+    clock.tick(60)
